@@ -20,23 +20,27 @@ public class HelloServlet extends HttpServlet {
 	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String nome = req.getParameter("nome");
 		String sobrenome = req.getParameter("sobrenome");
-		resp.getWriter().print("Olá mundo Servlet GET" + " | " + nome + " " + sobrenome);
+		resp.getWriter().print("Passando parâmetros via GET" + " | " + nome + " " + sobrenome);
 	}
 
 	@Override
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 		String nome = req.getParameter("nome");
 		String sobrenome = req.getParameter("sobrenome");
-		resp.getWriter().print("Olá mundo Servlet POST" + " | " + nome + " " + sobrenome);
+		resp.getWriter().print("Passando parâmetros via POST" + " | " + nome + " " + sobrenome);
 	}
-	
+
 	@Override
 	protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.getWriter().print("Olá mundo Servlet PUT");
+		String nome = req.getParameter("nome");
+		String sobrenome = req.getParameter("sobrenome");
+		resp.getWriter().print("Passando parâmetros via PUT" + " | " + nome + " " + sobrenome);
 	}
-	
+
 	@Override
 	protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		resp.getWriter().print("Olá mundo Servlet DELETE");
+		String nome = req.getParameter("nome");
+		String sobrenome = req.getParameter("sobrenome");
+		resp.getWriter().print("Passando parâmetros via DELETE" + " | " + nome + " " + sobrenome);
 	}
 }
