@@ -10,7 +10,7 @@ import java.util.List;
 import com.mysql.jdbc.Statement;
 
 public class CarroDAO extends BaseDAO {
-	public Carro getCarroById(Long id) throws SQLException {
+	public Carro buscarPorId(Long id) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 
@@ -20,7 +20,7 @@ public class CarroDAO extends BaseDAO {
 			stmt.setLong(1, id);
 			ResultSet rs = stmt.executeQuery();
 			if (rs.next()) {
-				Carro c = createCarro(rs);
+				Carro c = recuperarCarro(rs);
 				rs.close();
 				return c;
 			}
@@ -35,7 +35,7 @@ public class CarroDAO extends BaseDAO {
 		return null;
 	}
 
-	public List<Carro> findByName(String name) throws SQLException {
+	public List<Carro> buscarPorNome(String name) throws SQLException {
 		List<Carro> carros = new ArrayList<>();
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -46,7 +46,7 @@ public class CarroDAO extends BaseDAO {
 			stmt.setString(1, "%" + name.toLowerCase() + "%");
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				Carro c = createCarro(rs);
+				Carro c = recuperarCarro(rs);
 				carros.add(c);
 			}
 			rs.close();
@@ -61,7 +61,7 @@ public class CarroDAO extends BaseDAO {
 		return carros;
 	}
 
-	public List<Carro> findByTipo(String tipo) throws SQLException {
+	public List<Carro> buscarPorTipo(String tipo) throws SQLException {
 		List<Carro> carros = new ArrayList<>();
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -72,7 +72,7 @@ public class CarroDAO extends BaseDAO {
 			stmt.setString(1, tipo);
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				Carro carro = createCarro(rs);
+				Carro carro = recuperarCarro(rs);
 				carros.add(carro);
 			}
 			rs.close();
@@ -87,7 +87,7 @@ public class CarroDAO extends BaseDAO {
 		return carros;
 	}
 
-	public List<Carro> getCarros() throws SQLException {
+	public List<Carro> listar() throws SQLException {
 		List<Carro> carros = new ArrayList<>();
 		Connection conn = null;
 		PreparedStatement stmt = null;
@@ -97,7 +97,7 @@ public class CarroDAO extends BaseDAO {
 			stmt = conn.prepareStatement("select * from carro");
 			ResultSet rs = stmt.executeQuery();
 			while (rs.next()) {
-				Carro carro = createCarro(rs);
+				Carro carro = recuperarCarro(rs);
 				carros.add(carro);
 			}
 			rs.close();
@@ -112,7 +112,7 @@ public class CarroDAO extends BaseDAO {
 		return carros;
 	}
 
-	public Carro createCarro(ResultSet rs) throws SQLException {
+	private Carro recuperarCarro(ResultSet rs) throws SQLException {
 		Carro carro = new Carro();
 
 		carro.setId(rs.getLong("id"));
@@ -127,7 +127,7 @@ public class CarroDAO extends BaseDAO {
 		return carro;
 	}
 
-	public void save(Carro carro) throws SQLException {
+	public void salvar(Carro carro) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 
@@ -160,7 +160,7 @@ public class CarroDAO extends BaseDAO {
 			}
 
 			if (carro.getId() == null) {
-				Long id = getGeneratedId(stmt);
+				Long id = recuperarIdGerado(stmt);
 				carro.setId(id);
 			}
 		} finally {
@@ -173,7 +173,7 @@ public class CarroDAO extends BaseDAO {
 		}
 	}
 
-	public Long getGeneratedId(PreparedStatement stmt) throws SQLException {
+	private Long recuperarIdGerado(PreparedStatement stmt) throws SQLException {
 		ResultSet rs = stmt.getGeneratedKeys();
 		if (rs.next()) {
 			Long id = rs.getLong(1);
@@ -184,7 +184,7 @@ public class CarroDAO extends BaseDAO {
 		}
 	}
 
-	public boolean delete(Long id) throws SQLException {
+	public boolean excluir(Long id) throws SQLException {
 		Connection conn = null;
 		PreparedStatement stmt = null;
 		try {
